@@ -43,6 +43,24 @@ class BasePage:
             EC.element_to_be_clickable(locator)
         )
 
+    @allure.step("Ожидать что элемент {locator} станет активным")
+    def wait_for_element_enabled(self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+            lambda d: d.find_element(*locator).is_enabled()
+        )
+
+    @allure.step("Ожидать что текст элемента {locator} не пустой")
+    def wait_for_element_has_text(self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+            lambda d: d.find_element(*locator).text != ""
+        )
+
+    @allure.step("Ожидать ухода со страницы содержащей '{keyword}' в URL")
+    def wait_for_url_change(self, keyword, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(
+            lambda d: keyword not in d.current_url
+        )
+
     @allure.step("Получить текущий URL страницы")
     def get_current_url(self):
         return self.driver.current_url

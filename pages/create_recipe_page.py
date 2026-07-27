@@ -1,5 +1,4 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 from locators.create_recipe_page_locators import CreateRecipePageLocators
@@ -14,9 +13,9 @@ class CreateRecipePage(BasePage):
         self.send_keys(CreateRecipePageLocators.DESCRIPTION_INPUT, description)
         self.add_ingredient(ingredient)
         self.send_keys(CreateRecipePageLocators.IMAGE_INPUT, image_path)
-        self.wait_for_submit_enabled()
+        self.wait_for_element_enabled(CreateRecipePageLocators.SUBMIT_BUTTON)
         self.click(CreateRecipePageLocators.SUBMIT_BUTTON)
-        self.wait_for_redirect()
+        self.wait_for_url_change("create")
 
     @allure.step("Добавить ингредиент: '{ingredient}'")
     def add_ingredient(self, ingredient):
@@ -27,15 +26,3 @@ class CreateRecipePage(BasePage):
         self.send_keys(CreateRecipePageLocators.INGREDIENT_AMOUNT_INPUT, "100")
         self.wait_for_element_clickable(CreateRecipePageLocators.INGREDIENT_ADD_BUTTON)
         self.click(CreateRecipePageLocators.INGREDIENT_ADD_BUTTON)
-
-    @allure.step("Дождаться активации кнопки отправки")
-    def wait_for_submit_enabled(self, timeout=10):
-        WebDriverWait(self.driver, timeout).until(
-            lambda d: d.find_element(*CreateRecipePageLocators.SUBMIT_BUTTON).is_enabled()
-        )
-
-    @allure.step("Дождаться редиректа после создания рецепта")
-    def wait_for_redirect(self, timeout=10):
-        WebDriverWait(self.driver, timeout).until(
-            lambda d: "create" not in d.current_url
-        )

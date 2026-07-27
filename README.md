@@ -45,7 +45,6 @@ bash
 docker pull selenoid/chrome:128.0
 docker-compose up --build
 
-
 ### Генерация Allure отчёта
 Команда для генерации Allure-отчёта:
 pytest --alluredir=allure_results

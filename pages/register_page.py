@@ -1,5 +1,4 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
 from pages.base_page import BasePage
 from locators.register_page_locators import RegisterPageLocators
 
@@ -14,6 +13,4 @@ class RegisterPage(BasePage):
         self.send_keys(RegisterPageLocators.EMAIL_INPUT, email)
         self.send_keys(RegisterPageLocators.PASSWORD_INPUT, password)
         self.click(RegisterPageLocators.SUBMIT_BUTTON)
-        WebDriverWait(self.driver, 5).until(
-            lambda d: "signup" not in d.current_url
-        )
+        self.wait_for_url_change("signup")

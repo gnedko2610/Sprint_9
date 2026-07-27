@@ -1,5 +1,4 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
 from constants import URL
@@ -34,7 +33,5 @@ class MainPage(BasePage):
 
     @allure.step("Получить заголовок рецепта")
     def get_recipe_title(self):
-        WebDriverWait(self.driver, 5).until(
-            lambda d: d.find_element(*MainPageLocators.RECIPE_TITLE).text != ""
-        )
+        self.wait_for_element_has_text(MainPageLocators.RECIPE_TITLE)
         return self.get_text(MainPageLocators.RECIPE_TITLE)
